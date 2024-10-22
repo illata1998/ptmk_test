@@ -37,16 +37,24 @@ class EmployeeDB:
         with self.conn.cursor() as cur:
             sql = """
             CREATE TABLE employees (
-                id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                full_name VARCHAR(255),
+                id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                full_name VARCHAR(100),
                 date_of_birth DATE,
                 sex VARCHAR(6)
             );
+            CREATE VIEW male_employees AS
+            SELECT
+                id,
+                full_name,
+                date_of_birth,
+                sex
+            FROM employees
+            WHERE sex = 'Male';
             """
             cur.execute(sql)
             self.conn.commit()
 
-    def save_employee(self, employee: Employee) -> None:
+    def insert_employee(self, employee: Employee) -> None:
         """
         Takes one Employee class object and
         inserts its data into the 'employees' table.
@@ -59,7 +67,7 @@ class EmployeeDB:
             )
             self.conn.commit()
 
-    def find_unique_employees(self) -> list[Employee]:
+    def fetch_unique_employees(self) -> list[Employee]:
         """
         Selects employees from the 'employees' table with
         the unique combination of 'full_name' and 'date_of_birth'
@@ -86,7 +94,7 @@ class EmployeeDB:
                 ))
         return employees
 
-    def bulk_save_employees(self, employees: tuple) -> None:
+    def bulk_insert_employees(self, employees: tuple) -> None:
         """
         Takes a tuple of employees' data
         and inserts it the 'employees' table.
@@ -98,7 +106,7 @@ class EmployeeDB:
             execute_values(cur, sql, employees)
             self.conn.commit()
 
-    def select_employees(self, first_letter: str, sex: str) -> list[Employee]:
+    def fetch_employees(self, first_letter: str) -> list[Employee]:
         """
         Fetches employees from the 'employees' table
         according to two criteria: first letter of their name
@@ -113,11 +121,10 @@ class EmployeeDB:
                 date_of_birth,
                 sex,
                 DATE_PART('YEAR', AGE(NOW(), date_of_birth)) AS age
-            FROM employees
-            WHERE sex = %(sex)s AND full_name LIKE %(first_letter)s;
+            FROM male_employees
+            WHERE full_name LIKE %(first_letter)s;
             """
-            cur.execute(sql, {'first_letter': first_letter + '%%',
-                              'sex': sex})
+            cur.execute(sql, {'first_letter': first_letter + '%%',})
             for row in cur.fetchall():
                 employees.append(Employee(
                     full_name=row.full_name,
