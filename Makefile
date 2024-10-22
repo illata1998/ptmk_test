@@ -9,6 +9,3 @@ package-install:
 
 lint:
 	poetry run flake8
-
-selfcheck:
-	poetry check
