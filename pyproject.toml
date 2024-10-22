@@ -5,8 +5,14 @@ description = ""
 authors = ["Ulyana Krasilnikova <b-lack-u@yandex.ru>"]
 readme = "README.md"
 
+[tool.poetry.scripts]
+ptmk-app = 'ptmk_test.scripts.ptmk_app:main'
+
+
 [tool.poetry.dependencies]
 python = "^3.10"
+psycopg2-binary = "^2.9.10"
+tabulate = "^0.9.0"
 
 
 [tool.poetry.group.dev.dependencies]
