@@ -10,7 +10,7 @@ def select_f_male_employees(database):
     of tabular data.
     """
     start_time = time.time()
-    employees = database.fetch_employees(first_letter='F')
+    employees = database.fetch_employees_by_first_letter(first_letter='F')
     run_time = "--- %s seconds ---" % (time.time() - start_time)
     headers = ["Full Name", "Date of Birth", "Sex", "Age"]
     print(tabulate(employees, headers=headers, tablefmt="fancy_grid"))

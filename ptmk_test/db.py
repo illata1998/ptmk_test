@@ -106,7 +106,7 @@ class EmployeeDB:
             execute_values(cur, sql, employees)
             self.conn.commit()
 
-    def fetch_employees(self, first_letter: str) -> list[Employee]:
+    def fetch_employees_by_first_letter(self, first_letter: str) -> list[Employee]:
         """
         Fetches employees from the 'employees' table
         according to two criteria: first letter of their name
