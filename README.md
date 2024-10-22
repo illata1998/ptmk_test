@@ -21,7 +21,7 @@ echo "DB_PASSWORD=5456" >> .env
 echo "DB_HOST=localhost" >> .env
 echo "DB_PORT=5432" >> .env
 ```
-Use the build command builds the source and wheels archives.
+Use the build command to build the source and wheels archives.
 ```bash
 make build
 ```
