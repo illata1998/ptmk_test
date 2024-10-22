@@ -1,16 +1,19 @@
 import time
 from tabulate import tabulate
+from ptmk_test.db import EmployeeDB
 
 
-def select_f_male_employees(database):
+def select_f_male_employees(database: EmployeeDB):
     """
-    Fetches male employees whose names start with the letter 'F'
-    from the 'employees' table. Measures the execution time of
-    this operation. Prints out the found employees in the form
-    of tabular data.
+    Fetches and displays male employees whose names start with
+    the letter 'F' from the database.
+
+    Args:
+        database (EmployeeDB): An instance of the EmployeeDB class representing
+                               the connection to the employee database.
     """
     start_time = time.time()
-    employees = database.fetch_employees_by_first_letter(first_letter='F')
+    employees = database.fetch_male_employees_by_first_letter(first_letter='F')
     run_time = "--- %s seconds ---" % (time.time() - start_time)
     headers = ["Full Name", "Date of Birth", "Sex", "Age"]
     print(tabulate(employees, headers=headers, tablefmt="fancy_grid"))

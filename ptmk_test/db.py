@@ -1,21 +1,41 @@
 import psycopg2
+import datetime
+from typing import Generator
 from psycopg2.extras import NamedTupleCursor, execute_values
-from psycopg2.extensions import cursor
 from ptmk_test.models import Employee
 
 
 class EmployeeDB:
     """
     PostgreSQL employees database class.
+
+    This class provides an interface for interacting with a PostgreSQL database
+    containing employee information. It includes methods for creating tables,
+    inserting and fetching employee data, and performing specialized queries.
+
+    Attributes:
+        conn (psycopg2.extensions.connection): The database connection object.
     """
-    def __init__(self, dbname: str, user: str, password: str,
-                 host: str, port: str,
-                 cursor_factory: cursor = NamedTupleCursor) -> None:
+
+    def __init__(
+            self, dbname: str, user: str, password: str,
+            host: str, port: str,
+            cursor_factory: psycopg2.extensions.cursor = NamedTupleCursor
+    ) -> None:
         """
-        Initializes the database connection with provided
-        connection parameters: the database name,
-        username, user password, database host address,
-        connection port number.
+        Initializes the database connection with provided connection parameters.
+
+        Args:
+            dbname (str): The name of the database.
+            user (str): The username for database access.
+            password (str): The password for database access.
+            host (str): The database server address.
+            port (str): The port number for the database connection.
+            cursor_factory (cursor, optional): The cursor factory to use.
+                                               Defaults to NamedTupleCursor.
+
+        Raises:
+            Exception: If the connection to the database fails.
         """
         try:
             self.conn = psycopg2.connect(
@@ -31,8 +51,12 @@ class EmployeeDB:
 
     def create_employees_table(self) -> None:
         """
-        Creates the 'employees' table and an index for it
-        on the 'full_name' and 'sex' fields.
+        Creates the 'employees' table and a view for male employees.
+
+        This method creates a table named 'employees' with columns for
+        id, full_name, date_of_birth, and sex. It also creates a view
+        named 'male_employees' that selects all male employees from
+        the 'employees' table.
         """
         with self.conn.cursor() as cur:
             sql = """
@@ -56,8 +80,11 @@ class EmployeeDB:
 
     def insert_employee(self, employee: Employee) -> None:
         """
-        Takes one Employee class object and
-        inserts its data into the 'employees' table.
+        Inserts a single employee into the 'employees' table.
+
+        Args:
+            employee (Employee): An Employee object containing the data
+                                 to be inserted.
         """
         with self.conn.cursor() as cur:
             cur.execute(
@@ -69,9 +96,14 @@ class EmployeeDB:
 
     def fetch_unique_employees(self) -> list[Employee]:
         """
-        Selects employees from the 'employees' table with
-        the unique combination of 'full_name' and 'date_of_birth'
-        fields and returns a list of Employee objects.
+        Fetches unique employees from the 'employees' table.
+
+        This method selects employees with unique combinations of 'full_name'
+        and 'date_of_birth', calculates their age, and returns them as a list
+        of Employee objects.
+
+        Returns:
+            list[Employee]: A list of unique Employee objects.
         """
         employees = []
         with self.conn.cursor() as cur:
@@ -94,10 +126,15 @@ class EmployeeDB:
                 ))
         return employees
 
-    def bulk_insert_employees(self, employees: tuple) -> None:
+    def bulk_insert_employees(self, employees: Generator[
+        tuple[str, datetime.date, str], None, None
+    ]) -> None:
         """
-        Takes a tuple of employees' data
-        and inserts it the 'employees' table.
+        Inserts multiple employees into the 'employees' table in a single
+        operation.
+
+        Args:
+            employees (tuple): A tuple of employee data to be inserted.
         """
         with self.conn.cursor() as cur:
             sql = """
@@ -106,12 +143,22 @@ class EmployeeDB:
             execute_values(cur, sql, employees)
             self.conn.commit()
 
-    def fetch_employees_by_first_letter(self, first_letter: str) -> list[Employee]:
+    def fetch_male_employees_by_first_letter(
+            self, first_letter: str
+    ) -> list[Employee]:
         """
-        Fetches employees from the 'employees' table
-        according to two criteria: first letter of their name
-        and their sex, which are passed as parameters.
-        Returns a list of Employee objects.
+        Fetches male employees whose names start with a specific letter.
+
+        This method queries the 'male_employees' view to retrieve employees
+        whose full names start with the specified letter. It also calculates
+        their age.
+
+        Args:
+            first_letter (str): The first letter of the employee's name
+                                to search for.
+
+        Returns:
+            list[Employee]: A list of Employee objects matching the criteria.
         """
         employees = []
         with self.conn.cursor() as cur:
@@ -124,7 +171,7 @@ class EmployeeDB:
             FROM male_employees
             WHERE full_name LIKE %(first_letter)s;
             """
-            cur.execute(sql, {'first_letter': first_letter + '%%',})
+            cur.execute(sql, {'first_letter': first_letter + '%%'})
             for row in cur.fetchall():
                 employees.append(Employee(
                     full_name=row.full_name,

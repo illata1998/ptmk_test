@@ -1,12 +1,19 @@
 from tabulate import tabulate
+from ptmk_test.db import EmployeeDB
 
 
-def find_and_show_unique_employees(database):
+def find_and_show_unique_employees(database: EmployeeDB):
     """
-    Fetches employees with unique full_name and
-    date_of_birth fields from the 'employees' table.
-    Prints out the found employees in the form of tabular data
-    or a message if no entities were found.
+    Fetches and displays unique employees from the database.
+
+    This function retrieves employees with unique combinations of full name and
+    date of birth from the 'employees' table in the database. It then displays
+    the results in a formatted table or prints a message if no employees are
+    found.
+
+    Args:
+        database (EmployeeDB): An instance of the EmployeeDB class representing
+                               the connection to the employee database.
     """
     employees = database.fetch_unique_employees()
     if employees:

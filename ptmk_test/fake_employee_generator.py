@@ -2,12 +2,20 @@ import random
 import string
 import datetime
 from ptmk_test.models import Employee
+from typing import Generator
 
 
 def generate_fake_date(start_year: int, finish_year: int) -> datetime.date:
     """
-    Generates a fake date between two years
-    which are passed as parameters.
+    Generates a fake date between two specified years.
+
+    Args:
+        start_year (int): The lower bound year for the generated date.
+        finish_year (int): The upper bound year for the generated date.
+
+    Returns:
+        datetime.date: A randomly generated date within the specified
+                       year range.
     """
     year = random.randint(start_year, finish_year)
     month = random.randint(1, 12)
@@ -26,7 +34,10 @@ def generate_fake_date(start_year: int, finish_year: int) -> datetime.date:
 
 def generate_fake_sex() -> str:
     """
-    Generates a fake sex. Chooses between 'Male' and 'Female'.
+    Generates a random sex.
+
+    Returns:
+        str: Either 'Male' or 'Female', chosen randomly.
     """
     return random.choice(['Male', 'Female'])
 
@@ -35,32 +46,50 @@ def generate_fake_name(
         first_letter: str | None = None,
         length: int = 5) -> str:
     """
-    Generates a fake name-like string of the provided length starting with
-    the provided first letter (else - with a random letter).
+    Generates a fake name-like string.
+
+    Args:
+        first_letter (str | None, optional): The first letter of the name.
+                                             If None, a random uppercase letter
+                                             is used. Defaults to None.
+        length (int, optional): The length of the name (excluding the first
+                                letter). Defaults to 5.
+
+    Returns:
+        str: A generated name-like string.
     """
-    fake_name = first_letter if first_letter \
-        else random.choice(string.ascii_uppercase)
-    return fake_name + ''.join(random.choice(string.ascii_lowercase)
-                               for _ in range(length))
+    first_letter = first_letter or random.choice(string.ascii_uppercase)
+    return first_letter + ''.join(
+        random.choices(string.ascii_lowercase, k=length)
+    )
 
 
 def generate_fake_employee(
         n: int,
-        first_letter: str = None,
-        predefined_sex: str = None):
+        first_letter: str | None = None,
+        predefined_sex: str | None = None) -> Generator[Employee, None, None]:
     """
-    Creates a generator iterator which produces a series of
-    fake Employee objects. The first letter of
-    the employee's full name and the employee's sex
-    can be passes as parameters.
+    Creates a generator that yields a series of fake Employee objects.
+
+    Args:
+        n (int): The number of fake employees to generate.
+        first_letter (str, optional): The first letter of the employee's
+                                      full name. If None, a random letter
+                                      is used. Defaults to None.
+        predefined_sex (str, optional): The sex of the employee. If None,
+                                        a random sex is generated. Defaults
+                                        to None.
+
+    Yields:
+        Employee: A fake Employee object with randomly generated attributes.
     """
     for _ in range(n):
-        sex = predefined_sex if predefined_sex else generate_fake_sex()
-        full_name = (generate_fake_name(first_letter=first_letter) + ' '
-                     + generate_fake_name() + ' ' + generate_fake_name())
+        sex = predefined_sex or generate_fake_sex()
+        full_name = ' '.join([
+            generate_fake_name(first_letter=first_letter),
+            generate_fake_name(),
+            generate_fake_name()
+        ])
         date_of_birth = generate_fake_date(1924, 2006)
-        yield Employee(
-            full_name=full_name,
-            sex=sex,
-            date_of_birth=date_of_birth
-        )
+        yield Employee(full_name=full_name, sex=sex,
+                       date_of_birth=date_of_birth)
