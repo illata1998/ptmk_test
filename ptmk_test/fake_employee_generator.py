@@ -38,9 +38,10 @@ def generate_fake_name(
     Generates a fake name-like string of the provided length starting with
     the provided first letter (else - with a random letter).
     """
-    fake_name = first_letter if first_letter else random.choice(string.ascii_uppercase)
+    fake_name = first_letter if first_letter \
+        else random.choice(string.ascii_uppercase)
     return fake_name + ''.join(random.choice(string.ascii_lowercase)
-                    for _ in range(length))
+                               for _ in range(length))
 
 
 def generate_fake_employee(
@@ -55,8 +56,8 @@ def generate_fake_employee(
     """
     for _ in range(n):
         sex = predefined_sex if predefined_sex else generate_fake_sex()
-        full_name = (generate_fake_name(first_letter=first_letter) + ' ' +
-                     generate_fake_name() + ' ' + generate_fake_name())
+        full_name = (generate_fake_name(first_letter=first_letter) + ' '
+                     + generate_fake_name() + ' ' + generate_fake_name())
         date_of_birth = generate_fake_date(1924, 2006)
         yield Employee(
             full_name=full_name,

@@ -1,10 +1,7 @@
-import psycopg2
-
-
 def create_employees_table(database) -> None:
     """
     Creates the 'employees' table.
-    Prints out a successful message or an error.
+    Prints out a success message.
     """
     try:
         database.create_employees_table()

@@ -16,8 +16,8 @@ def main():
     provided parameters parsed from the command line.
     """
     args = parse_arguments()
-    database = EmployeeDB(dbname='ptmk_test_db', user='postgres', password='5456',
-                 host='localhost', port='5432')
+    database = EmployeeDB(dbname='ptmk_test_db', user='postgres',
+                          password='5456', host='localhost', port='5432')
     match args.mode:
         case '1':
             create_employees_table(database=database)

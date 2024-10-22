@@ -17,14 +17,17 @@ class EmployeeDB:
         username, user password, database host address,
         connection port number.
         """
-        self.conn = psycopg2.connect(
-            dbname=dbname,
-            user=user,
-            password=password,
-            host=host,
-            port=port,
-            cursor_factory=cursor_factory
-        )
+        try:
+            self.conn = psycopg2.connect(
+                dbname=dbname,
+                user=user,
+                password=password,
+                host=host,
+                port=port,
+                cursor_factory=cursor_factory
+            )
+        except Exception as e:
+            print(f'Something went wrong: {e}')
 
     def create_employees_table(self) -> None:
         """
@@ -50,7 +53,8 @@ class EmployeeDB:
         """
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO employees (full_name, date_of_birth, sex) VALUES (%s, %s, %s) RETURNING id;",
+                "INSERT INTO employees (full_name, date_of_birth, sex)"
+                "VALUES (%s, %s, %s) RETURNING id;",
                 (employee.full_name, employee.date_of_birth, employee.sex)
             )
             self.conn.commit()
@@ -91,7 +95,7 @@ class EmployeeDB:
             sql = """
             INSERT INTO employees (full_name, date_of_birth, sex) values %s
             """
-            psycopg2.extras.execute_values(cur, sql, employees)
+            execute_values(cur, sql, employees)
             self.conn.commit()
 
     def select_employees(self, first_letter: str, sex: str) -> list[Employee]:
