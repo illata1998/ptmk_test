@@ -18,6 +18,6 @@ def create_and_save_employee(
         ).date(),
         sex=sex
     )
-    database.save_employee(employee)
+    database.insert_employee(employee)
     print(f'Employee {full_name} was inserted into '
           f'the database successfully.')

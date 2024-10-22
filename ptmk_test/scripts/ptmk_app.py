@@ -2,7 +2,7 @@
 
 
 from ptmk_test.cli import parse_arguments
-from ptmk_test.db import EmployeeDB
+from ptmk_test.db_connection import get_db_connection
 from ptmk_test.mode_1 import create_employees_table
 from ptmk_test.mode_2 import create_and_save_employee
 from ptmk_test.mode_3 import find_and_show_unique_employees
@@ -15,9 +15,9 @@ def main():
     Manages the employees database according to
     provided parameters parsed from the command line.
     """
+    database = get_db_connection()
     args = parse_arguments()
-    database = EmployeeDB(dbname='ptmk_test_db', user='postgres',
-                          password='5456', host='localhost', port='5432')
+
     match args.mode:
         case '1':
             create_employees_table(database=database)
