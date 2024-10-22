@@ -33,16 +33,16 @@ make package-install
 ## Usage
 ```bash
 # create the 'employees' database
-ptmk_test 1
+ptmk-app 1
 # insert an employee into the 'employees' database
-ptmk_test "Ivanov Petr Sergeevich" 2009-07-12 Male
+ptmk-app "Ivanov Petr Sergeevich" 2009-07-12 Male
 # fetch employees with unique combination of 
 # 'full_name' and 'date_of_birth' fields
-ptmk_test 3
+ptmk-app 3
 # fill the 'employees' database with 1,000,000 fake employees
 # and 100 fake male employees whose names start with the letter 'F'
-ptmk_test 4
+ptmk-app 4
 # fetch all the fake male employees whose names start with the letter 'F'
 # and measure the execution time
-ptmk_test 5
+ptmk-app 5
 ```
