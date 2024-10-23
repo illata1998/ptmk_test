@@ -1,6 +1,5 @@
-import os
-from dotenv import load_dotenv
 from ptmk_test.db import EmployeeDB
+from config import DB_USER, DB_NAME, DB_PORT, DB_HOST, DB_PASSWORD
 
 
 def get_db_connection() -> EmployeeDB:
@@ -22,13 +21,7 @@ def get_db_connection() -> EmployeeDB:
         DB_NAME: The name of the database.
         DB_PORT: The port number for the database connection.
     """
-    load_dotenv()
-    db_server = os.getenv('DB_SERVER')
-    db_user = os.getenv('DB_USER')
-    db_password = os.getenv('DB_PASSWORD')
-    db_name = os.getenv('DB_NAME')
-    db_port = os.getenv('DB_PORT')
-    database = EmployeeDB(dbname=db_name, user=db_user,
-                          password=db_password, host=db_server,
-                          port=db_port)
+    database = EmployeeDB(dbname=DB_NAME, user=DB_USER,
+                          password=DB_PASSWORD, host=DB_HOST,
+                          port=DB_PORT)
     return database

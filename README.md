@@ -13,13 +13,13 @@ Install dependencies using [Poetry](https://python-poetry.org/docs/).
 ```bash
 make install
 ```
-Create the new .env file and define your database connection parameters (DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT) there. For example,
+Create the new config.py file and define your database connection parameters (DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT) there. For example,
 ```bash
-echo "DB_NAME=ptmk_test_db" >> .env
-echo "DB_USER=postgres" >> .env
-echo "DB_PASSWORD=5456" >> .env
-echo "DB_HOST=localhost" >> .env
-echo "DB_PORT=5432" >> .env
+echo "DB_NAME = 'ptmk_test_db'" >> config.py
+echo "DB_USER = 'postgres'" >> config.py
+echo "DB_PASSWORD = '5456'" >> config.py
+echo "DB_HOST = 'localhost'" >> config.py
+echo "DB_PORT = '5432'" >> config.py
 ```
 Use the build command to build the source and wheels archives.
 ```bash

@@ -1,6 +1,3 @@
-#!/user/bin/env python3
-
-
 from ptmk_test.cli import parse_arguments
 from ptmk_test.db_connection import get_db_connection
 from ptmk_test.mode_1 import create_employees_table
@@ -42,7 +39,7 @@ def main():
             date_of_birth=args.date_of_birth
         ),
         '3': lambda: find_and_show_unique_employees(database=database),
-        '4': lambda: fill_employees_table(database),
+        '4': lambda: fill_employees_table(database=database),
         '5': lambda: select_f_male_employees(database=database)
     }
 

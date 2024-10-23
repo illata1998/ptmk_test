@@ -9,3 +9,6 @@ package-install:
 
 lint:
 	poetry run flake8
+
+ptmk-app:
+	poetry run ptmk-app
