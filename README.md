@@ -37,17 +37,17 @@ make package-install
 
 ## Usage
 ```bash
-# create the 'employees' database
+# create the 'employees' table
 ptmk-app 1
 
-# insert an employee into the 'employees' database
+# insert an employee into the 'employees' table
 ptmk-app "Ivanov Petr Sergeevich" 2009-07-12 Male
 
 # fetch employees with unique combination of 
 # 'full_name' and 'date_of_birth' fields
 ptmk-app 3
 
-# fill the 'employees' database with 1,000,000 fake employees
+# fill the 'employees' tabke with 1,000,000 fake employees
 # and 100 fake male employees whose names start with the letter 'F'
 ptmk-app 4
 
