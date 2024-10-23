@@ -1,15 +1,9 @@
 from ptmk_test.models import Employee
 from ptmk_test.db import EmployeeDB
-from ptmk_test.args_validator import (validate_dob, validate_sex,
-                                      validate_full_name)
 import datetime
 
 
-def create_and_save_employee(
-        database: EmployeeDB,
-        full_name: str,
-        sex: str,
-        date_of_birth: str) -> None:
+def create_and_save_employee(database: EmployeeDB, **kwargs: dict) -> None:
     """
     Creates an Employee object and saves it to the database.
 
@@ -26,16 +20,13 @@ def create_and_save_employee(
                              in the format "YYYY-MM-DD".
     """
     try:
-        full_name = validate_full_name(full_name)
-        date_of_birth = datetime.date.fromisoformat(validate_dob(date_of_birth))
-        sex = validate_sex(sex)
         employee = Employee(
-            full_name=full_name,
-            date_of_birth=date_of_birth,
-            sex=sex
+            full_name=kwargs['full_name'],
+            date_of_birth=datetime.date.fromisoformat(kwargs['date_of_birth']),
+            sex=kwargs['sex']
         )
         database.insert_employee(employee)
-        print(f'Employee {full_name} was inserted into the '
+        print(f'Employee {kwargs["full_name"]} was inserted into the '
               f'database successfully.')
     except Exception as e:
-        print(f'Something went wrong: {e}')
+        print(f'An error occurred while saving the employee: {e}')

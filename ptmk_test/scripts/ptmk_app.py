@@ -1,10 +1,7 @@
 from ptmk_test.cli import parse_arguments
 from ptmk_test.db_connection import get_db_connection
-from ptmk_test.mode_1 import create_employees_table
-from ptmk_test.mode_2 import create_and_save_employee
-from ptmk_test.mode_3 import find_and_show_unique_employees
-from ptmk_test.mode_4 import fill_employees_table
-from ptmk_test.mode_5 import select_f_male_employees
+from ptmk_test.modes.mode_selector import get_mode_function
+from ptmk_test.args_processor import process_arguments
 
 
 def main():
@@ -27,24 +24,15 @@ def main():
     required for Mode 2.
 
     """
-    database = get_db_connection()
-    args = parse_arguments()
 
-    mode_functions = {
-        '1': lambda: create_employees_table(database=database),
-        '2': lambda: create_and_save_employee(
-            database=database,
-            full_name=args.full_name,
-            sex=args.sex,
-            date_of_birth=args.date_of_birth
-        ),
-        '3': lambda: find_and_show_unique_employees(database=database),
-        '4': lambda: fill_employees_table(database=database),
-        '5': lambda: select_f_male_employees(database=database)
-    }
 
-    mode_function = mode_functions.get(args.mode)
-    mode_function()
+    try:
+        database = get_db_connection()
+        validated_args = process_arguments()
+        mode_function = get_mode_function(validated_args['mode'])
+        mode_function(database, **validated_args)
+    except Exception as e:
+        print(f'Something went wrong: {e}')
 
 
 if __name__ == '__main__':

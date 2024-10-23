@@ -1,7 +1,7 @@
 from ptmk_test.db import EmployeeDB
 
 
-def create_employees_table(database: EmployeeDB) -> None:
+def create_employees_table(database: EmployeeDB, **kwargs: dict) -> None:
     """
     Creates the 'employees' table in the database.
 
@@ -18,4 +18,4 @@ def create_employees_table(database: EmployeeDB) -> None:
         database.create_employees_table()
         print('Table "employees" was successfully created.')
     except Exception as e:
-        print(f'Something went wrong: {e}')
+        print(f'An error occurred while creating the "employees" table: {e}')
