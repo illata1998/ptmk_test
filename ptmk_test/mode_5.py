@@ -15,6 +15,9 @@ def select_f_male_employees(database: EmployeeDB):
     start_time = time.time()
     employees = database.fetch_male_employees_by_first_letter(first_letter='F')
     run_time = "--- %s seconds ---" % (time.time() - start_time)
-    headers = ["Full Name", "Date of Birth", "Sex", "Age"]
-    print(tabulate(employees, headers=headers, tablefmt="fancy_grid"))
-    print(run_time)
+    if employees:
+        headers = ["Full Name", "Date of Birth", "Sex", "Age"]
+        print(tabulate(employees, headers=headers, tablefmt="fancy_grid"))
+        print(run_time)
+    else:
+        print('No entities were found.')
