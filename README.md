@@ -7,22 +7,27 @@ Application for managing simple Employee database.
 Clone this repository to your local machine.
 ```bash
 git clone git@github.com:illata1998/ptmk_test.git
+
 cd ptmk_test
 ```
 Install dependencies using [Poetry](https://python-poetry.org/docs/).
 ```bash
 make install
 ```
-Create the new config.py file and define your database connection parameters (DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT) there. For example,
+Create the new config.py file in the 'ptmk_test' directory (not in the root directory) and define your database connection parameters (DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT) there. For example,
 ```bash
-echo "DB_NAME = 'ptmk_test_db'" >> config.py
-echo "DB_USER = 'postgres'" >> config.py
-echo "DB_PASSWORD = '5456'" >> config.py
-echo "DB_HOST = 'localhost'" >> config.py
-echo "DB_PORT = '5432'" >> config.py
+cd ptmk_test
+
+echo "DB_NAME = 'your_db_name'" >> config.py
+echo "DB_USER = 'your_user_name'" >> config.py
+echo "DB_PASSWORD = 'your_password'" >> config.py
+echo "DB_HOST = 'your_host'" >> config.py
+echo "DB_PORT = 5432" >> config.py
 ```
-Use the build command to build the source and wheels archives.
+Go back to the root directory and use the build command to build the source and wheels archives.
 ```bash
+cd ..
+
 make build
 ```
 Install the app.
