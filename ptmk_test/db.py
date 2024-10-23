@@ -56,13 +56,13 @@ class EmployeeDB:
         This method creates a table named 'employees' with columns for
         id, full_name, date_of_birth, and sex. It also creates a view
         named 'male_employees' that selects all male employees from
-        the 'employees' table.
+        the 'employees' table. It also calculates their age.
         """
         with self.conn.cursor() as cur:
             sql = """
             CREATE TABLE employees (
                 id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                full_name VARCHAR(100),
+                full_name VARCHAR(64),
                 date_of_birth DATE,
                 sex VARCHAR(6)
             );
@@ -71,7 +71,8 @@ class EmployeeDB:
                 id,
                 full_name,
                 date_of_birth,
-                sex
+                sex,
+                DATE_PART('YEAR', AGE(NOW(), date_of_birth)) AS age
             FROM employees
             WHERE sex = 'Male';
             """
@@ -150,8 +151,7 @@ class EmployeeDB:
         Fetches male employees whose names start with a specific letter.
 
         This method queries the 'male_employees' view to retrieve employees
-        whose full names start with the specified letter. It also calculates
-        their age.
+        whose full names start with the specified letter.
 
         Args:
             first_letter (str): The first letter of the employee's name
@@ -167,7 +167,7 @@ class EmployeeDB:
                 full_name,
                 date_of_birth,
                 sex,
-                DATE_PART('YEAR', AGE(NOW(), date_of_birth)) AS age
+                age
             FROM male_employees
             WHERE full_name LIKE %(first_letter)s;
             """
