@@ -55,3 +55,8 @@ ptmk-app 4
 # and measure the execution time
 ptmk-app 5
 ```
+## Screenshots
+
+<img width="759" alt="Modes 1-4 running successfully" src="https://github.com/user-attachments/assets/348d3c94-9aff-4506-89d8-efd2f43b1b40">
+
+<img width="759" alt="Mode 5 execution time" src="https://github.com/user-attachments/assets/44fb5650-4bd7-4660-a06a-4dcc6fd791a4">
