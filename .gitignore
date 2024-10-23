@@ -15,4 +15,3 @@ coverage.xml
 /.idea/python-project-50.iml
 /.idea/vcs.xml
 .env
-config.py
