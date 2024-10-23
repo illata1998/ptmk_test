@@ -1,5 +1,5 @@
 from ptmk_test.db import EmployeeDB
-from config import DB_USER, DB_NAME, DB_PORT, DB_HOST, DB_PASSWORD
+from ptmk_test.config import DB_USER, DB_NAME, DB_PORT, DB_HOST, DB_PASSWORD
 
 
 def get_db_connection() -> EmployeeDB:
