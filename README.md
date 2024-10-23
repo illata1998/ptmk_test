@@ -6,7 +6,7 @@ Application for managing simple Employee database.
 ## Installation
 Clone this repository to your local machine.
 ```bash
-git clone git@github.com:illata1998/ptmk_test.git
+git clone https://github.com/illata1998/ptmk_test.git
 
 cd ptmk_test
 ```
