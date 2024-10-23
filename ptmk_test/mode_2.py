@@ -35,7 +35,7 @@ def create_and_save_employee(
             sex=sex
         )
         database.insert_employee(employee)
-        print(f'Employee {full_name} was inserted into the database successfully.')
+        print(f'Employee {full_name} was inserted into the '
+              f'database successfully.')
     except Exception as e:
         print(f'Something went wrong: {e}')
-
